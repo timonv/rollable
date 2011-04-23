@@ -28,7 +28,7 @@ Just two lines!
 In the model you defined during setup:
 
 bq. include Rollable::Base
-rollables <model names>, <option hash>
+rollables model names, option hash
 
 Currently, the available options are:
 
