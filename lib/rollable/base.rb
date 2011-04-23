@@ -54,25 +54,35 @@ module Rollable
     end
 
     def method_missing(method, *args)
-      if method =~ /^is_(\w+)_(?:on|of)\?$/ #Common spell to match against regex
+      if method =~ /^is_([a-z]+)(?:_(?:on|of))?\?$/ #Common spell to match against regex
         role = $1
-        that_thing = args.first
-        object = that_thing.class.to_s
+        that_thing = args.first.presence
+        object = that_thing.class.to_s if that_thing
         self.class_eval do #Open my class definition
-          define_method(method) do |thing| # Define the method. Helps a lot in performance
-            self.roles.where("rollable_type = ? AND name = ?", object, role).inject(false) do |v,o| # You can't do an inner join on polymorphic relationships, unfortunately.
-              v ||= (o.rollable == thing)
+          if that_thing
+            define_method(method) do |thing| # Define the method. Helps a lot in performance
+              self.roles.where("rollable_type = ? AND name = ?", object, role).inject(false) do |v,o| # You can't do an inner join on polymorphic relationships, unfortunately.
+                v ||= (o.rollable == thing)
+              end
+            end
+          else
+            define_method(method) do
+              self.roles.where("name = ?", role).count > 0
             end
           end
         end
-        self.public_send(method, that_thing) # And of course, call the method.
+        if that_thing
+          self.public_send(method, that_thing) # And of course, call the method.
+        else
+          self.public_send(method)
+        end
       else
         super
       end
     end
 
     def respond_to?(method, include_private=false)
-      if method =~ /^is_(\w+)_(?:on|of)\?$/
+      if method =~ /^is_([a-z]+)(?:_(?:on|of))?\?$/
         self.class.role_names.include?($1)
       else
         super

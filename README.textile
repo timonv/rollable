@@ -1,0 +1,58 @@
+h1. Rollable
+
+Rollable is a Rails gem that adds agnostic roles to your application. The core principle is that a role should not
+be coupled to any object, but is nothing more than a relationship. Rollable does not define semantics, you can use
+cancan or some similar gem to do just that.
+
+h2. Installation
+
+Add to your gemfile
+bq. gem 'rollable'
+
+And run
+bq. bundle install
+
+h2. Setup
+Rollable is ment to be easy and maintainable, with a minimal amount of configuration nescecary.
+
+Setup the role model and migration, where <user> is the model name you want to be able to have roles
+bq. rails generate rollable:setup
+bq. rake db:migrate
+
+h2. Configuration
+Just two lines!
+    
+In the model you defined during setup:
+bq. include Rollable::Base
+bq. rollables <model names>, <option hash>
+
+Currently, the available options are:
+bq. :roles => [Array of Strings] # Role names
+bq. :allow_nil => false # If true, you can create generic roles (like 'admin')
+
+h2. Features
+* Hardly any configuration
+* Validates role names, role types by inclusion and user presence on Role (all dynamic)
+* Much more!
+
+h2. Usage
+Rollable provides helpers based on role names to check whether a user has a role on an object:
+
+bq. user.is_owner_of?(horse) # => true
+
+You can also request all possible roles
+
+bq. User.role_names
+
+Lastly, if you use nil roles, you can also do
+
+bq. user.is_admin?
+
+h2. Limitations
+
+* Its the first release, don't whine.
+* Role names can only be single words (so no underscores), but keep it simple, right?
+
+Questions? Comments? Contribute? All welcome!
+
+- Timon Vonk
