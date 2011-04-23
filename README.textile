@@ -15,6 +15,7 @@ And run
 bq. bundle install
 
 h2. Setup
+
 Rollable is ment to be easy and maintainable, with a minimal amount of configuration nescecary.
 
 Setup the role model and migration, where <user> is the model name you want to be able to have roles
@@ -23,6 +24,7 @@ bq. rails generate rollable:setup
 rake db:migrate
 
 h2. Configuration
+
 Just two lines!
     
 In the model you defined during setup:
@@ -36,11 +38,13 @@ bq. :roles => [Array of Strings] # Role names
     :allow_nil => false # If true, you can create generic roles (like 'admin')
 
 h2. Features
+
 * Hardly any configuration
 * Validates role names, role types by inclusion and user presence on Role (all dynamic)
 * Much more!
 
 h2. Usage
+
 Rollable provides helpers based on role names to check whether a user has a role on an object:
 
 bq. user.is_owner_of?(horse) # => true
