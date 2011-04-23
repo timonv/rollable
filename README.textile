@@ -20,7 +20,7 @@ Rollable is ment to be easy and maintainable, with a minimal amount of configura
 Setup the role model and migration, where <user> is the model name you want to be able to have roles
 
 bq. rails generate rollable:setup
-bq. rake db:migrate
+rake db:migrate
 
 h2. Configuration
 Just two lines!
@@ -28,12 +28,12 @@ Just two lines!
 In the model you defined during setup:
 
 bq. include Rollable::Base
-bq. rollables <model names>, <option hash>
+rollables <model names>, <option hash>
 
 Currently, the available options are:
 
 bq. :roles => [Array of Strings] # Role names
-bq. :allow_nil => false # If true, you can create generic roles (like 'admin')
+    :allow_nil => false # If true, you can create generic roles (like 'admin')
 
 h2. Features
 * Hardly any configuration
