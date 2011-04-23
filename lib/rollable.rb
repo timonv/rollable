@@ -1,3 +1,3 @@
-module Rollable
-  require 'rollable/railtie.rb' if defined?(Rails)
-end
+require 'rollable/base.rb'
+require 'rollable/version.rb'
+require 'rollable'
