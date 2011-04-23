@@ -7,15 +7,18 @@ cancan or some similar gem to do just that.
 h2. Installation
 
 Add to your gemfile
+
 bq. gem 'rollable'
 
 And run
+
 bq. bundle install
 
 h2. Setup
 Rollable is ment to be easy and maintainable, with a minimal amount of configuration nescecary.
 
 Setup the role model and migration, where <user> is the model name you want to be able to have roles
+
 bq. rails generate rollable:setup
 bq. rake db:migrate
 
@@ -23,10 +26,12 @@ h2. Configuration
 Just two lines!
     
 In the model you defined during setup:
+
 bq. include Rollable::Base
 bq. rollables <model names>, <option hash>
 
 Currently, the available options are:
+
 bq. :roles => [Array of Strings] # Role names
 bq. :allow_nil => false # If true, you can create generic roles (like 'admin')
 
