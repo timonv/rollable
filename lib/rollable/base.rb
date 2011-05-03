@@ -1,3 +1,5 @@
+# TODO: Because of the endless blocks, some calls are too nested, needs to be fixed. Even more seperate methods
+# in seperate files would clean in up.
 module Rollable
   module Base
     def self.included(base)
@@ -19,12 +21,34 @@ module Rollable
           # Hackety hack.
           class << self; attr_reader :rollables, :role_names; end;
         end
-
+        
+        set_target_model_helpers
         set_relations_on_rollables
         set_role_validations
       end
 
       private
+
+      # DISCLAIMER: Headache and on the airport, hush.
+      # Helpers for target models like has_owner? and get_owners
+      def set_target_model_helpers
+        @rollables.select { |r| r.is_a?(String) }.each do |model|
+          model = model.constantize
+          @role_names.each do |role_name|
+            model.class_eval do
+              define_method("has_#{role_name}?") do
+                self.roles.where("name = ? ", role_name).count > 0
+              end
+
+              # TODO: get_#{role_name} doesn't sound very rubyish
+              define_method("get_#{role_name.pluralize}") do
+                self.roles.where("name = ? ", role_name).collect(&:user)
+              end
+            end
+          end
+        end
+      end
+
       def set_role_validations
         # Yugh, scope and self, ugly but it works.
         rollables = @rollables
@@ -47,12 +71,14 @@ module Rollable
               has_many :roles, :as => 'rollable'  # Define the relationship <img src="http://www.timonv.nl/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley">
             end
           else
+            # TODO: Check should be made earlier
             raise "#{model} is not an ActiveRecord object!"  #Again, just to be sure and nice.
           end
         end
       end
     end
 
+    # TODO: Don't need method_missing no more, use dynamic dispatch instead.
     def method_missing(method, *args)
       if method =~ /^is_([a-z]+)(?:_(?:on|of))?\?$/ #Common spell to match against regex
         role = $1
