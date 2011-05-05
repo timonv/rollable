@@ -45,6 +45,8 @@ h2. Features
 
 h2. Usage
 
+We'll call the model that can have roles users, for the sake of laziness.
+
 Rollable provides helpers based on role names to check whether a user has a role on an object:
 
 bq. user.is_owner_of?(horse) # => true
@@ -53,9 +55,17 @@ You can also request all possible roles
 
 bq. User.role_names
 
-Lastly, if you use nil roles, you can also do
+If you use nil roles, you can also do
 
 bq. user.is_admin?
+
+Since 0.0.2 you can also do
+
+bq. target_model.has_admin?
+
+And, to get all users with that role
+
+bq. target_model.get_admins
 
 h2. Limitations
 
