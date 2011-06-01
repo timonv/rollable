@@ -25,13 +25,29 @@ module Rollable
         set_target_model_helpers
         set_relations_on_rollables
         set_role_validations
+        set_role_setter_helpers
       end
 
       private
 
+      def set_role_setter_helpers
+        rollables = @rollables
+        @role_names.each do |name|
+          define_method("is_#{name}") do |object|
+            if rollables.include?(object.class.to_s)
+              self.roles.create!(:rollable => object, :name => name)
+            else
+              false
+            end
+          end
+        end
+      end
+                
+
       # DISCLAIMER: Headache and on the airport, hush.
       # Helpers for target models like has_owner? and get_owners
       def set_target_model_helpers
+        other = self
         @rollables.select { |r| r.is_a?(String) }.each do |model|
           model = model.constantize
           @role_names.each do |role_name|
@@ -42,7 +58,7 @@ module Rollable
 
               # TODO: get_#{role_name} doesn't sound very rubyish
               define_method("get_#{role_name.pluralize}") do
-                self.roles.where("name = ? ", role_name).collect(&:user)
+                self.roles.where("name = ? ", role_name).collect { |r| r.send(other.to_s.downcase) }
               end
             end
           end

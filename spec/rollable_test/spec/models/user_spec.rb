@@ -2,6 +2,19 @@ require 'spec_helper'
 
 describe User do
   context "Rollable helpers" do
+    it "should respond to setters" do
+      @user = User.create
+      @user.should respond_to(:is_owner)
+      @user.should respond_to(:is_rider)
+    end
+
+    it "should have working setters" do
+      @user = User.create
+      @horse = Horse.create
+      @user.is_owner(@horse)
+      @user.is_owner_of?(@horse).should be_true
+    end
+
     it "should respond to helper methods" do
       @user = User.new
       @user.should respond_to(:is_owner_of?)
