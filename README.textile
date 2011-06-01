@@ -53,6 +53,10 @@ You can also request all possible roles
 
 bq. User.role_names
 
+You can set roles easily by using the helper
+
+bq. user.is_owner(horse)
+
 Lastly, if you use nil roles, you can also do
 
 bq. user.is_admin?
