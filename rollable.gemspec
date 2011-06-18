@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.add_dependency "rails", "~> 3.0.6"
   s.add_dependency "rspec", "~> 2.6"
-  s.add_dependency "rake", "~> 0.8.7"
+  s.add_dependency "rake", "~> 0.9.0"
   s.add_dependency "rspec-rails"
 end
