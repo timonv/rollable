@@ -30,6 +30,22 @@ module Rollable
 
       private
 
+      # Not used
+      def set_role_checking_helpers
+        rollables = @rollables.reject { |c| c.nil? }
+        rollables.each do |object|
+          @role_names.each do |role|
+            ["_on","_of",""].each do |extra|
+              define_method("is_#{role}#{extra}?") do |thing|
+                self.roles.where("rollable_type = ? AND name = ?", object, role).inject(false) do |v,o| # You can't do an inner join on polymorphic relationships, unfortunately.
+                  v ||= (o.rollable == thing)
+                end
+              end
+            end
+          end
+        end
+      end
+
       def set_role_setter_helpers
         rollables = @rollables
         @role_names.each do |name|
@@ -96,7 +112,7 @@ module Rollable
 
     # TODO: Don't need method_missing no more, use dynamic dispatch instead.
     def method_missing(method, *args)
-      if method =~ /^is_([a-z]+)(?:_(?:on|of))?\?$/ #Common spell to match against regex
+      if !(method =~ /is_a\?/) && method =~ /^is_([a-z]+)(?:_(?:on|of))?\?$/ #Common spell to match against regex
         role = $1
         that_thing = args.first.presence
         object = that_thing.class.to_s if that_thing

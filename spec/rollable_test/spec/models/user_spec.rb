@@ -33,4 +33,11 @@ describe User do
       @user.is_owner_of?(Horse.first).should be_true
     end
   end
+
+  context "Bugs" do
+    it "should still respond to is_a?" do
+      @user = User.create
+      @user.is_a?(User).should be_true
+    end
+  end
 end
