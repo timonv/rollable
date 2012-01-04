@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
+gem 'rails', '~> 3.0.7'
 gem 'rake', '~> 0.9.0'
 
 # Bundle edge Rails instead:
@@ -30,4 +30,6 @@ gem 'rollable', :path => '../../'
 # and rake tasks are available in development mode:
  group :development, :test do
    gem 'rspec-rails', '~> 2.6.0'
+   gem 'guard'
+   gem 'guard-rspec'
  end

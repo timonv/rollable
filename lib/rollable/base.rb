@@ -140,7 +140,7 @@ module Rollable
     end
 
     def respond_to?(method, include_private=false)
-      if method =~ /^is_([a-z]+)(?:_(?:on|of))?\?$/
+      if !(method =~ /is_a\?/) && method =~ /^is_([a-z]+)(?:_(?:on|of))?\?$/
         self.class.role_names.include?($1)
       else
         super

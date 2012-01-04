@@ -39,5 +39,12 @@ describe User do
       @user = User.create
       @user.is_a?(User).should be_true
     end
+
+    it "should still respond to is_a? after helper is called" do
+      @user = User.create
+      @user.roles.create(:name => "owner", :rollable => Horse.create)
+      @user.is_owner_of?(Horse.first)
+      @user.should respond_to(:is_a?)
+    end
   end
 end
