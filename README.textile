@@ -1,3 +1,5 @@
+h3. Rollable is a *very old* gem that should *not* be used in production. It is unmaintained and untested with Rails > 2.3. Also, the code is very crude and dodgy.
+
 h1. Rollable
 
 Rollable is a Rails gem that adds agnostic roles to your application. The core principle is that a role should not
